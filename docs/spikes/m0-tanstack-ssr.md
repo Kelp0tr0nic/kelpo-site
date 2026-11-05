@@ -2,11 +2,11 @@
 
 ## 1. Result
 
-**Delivery: FAIL/BLOCKED. Technical M0 item 1: PASS.**
+**PASS.**
 
 TanStack Start built a Bun-targeted production server, returned complete HTML for the SSR route, omitted the client-only route component from raw HTML, and rendered that component successfully in Chromium. The final clean-install `bun run verify` exited `0` with 5 passing tests and no failures.
 
-The requested delivery workflow is blocked because this checkout has no `origin` remote. The spike commit was created locally, but `git push -u origin spike/m0-tanstack-ssr` failed with `fatal: 'origin' does not appear to be a git repository`. No hosted PR or CI result is available.
+The initial delivery blocker was resolved by creating the public repository at https://github.com/Kelp0tr0nic/kelpo-site, configuring `origin`, and pushing the existing `main`, spike, and findings branches. The owner explicitly approved the one-time initial `main` push required to bootstrap the repository.
 
 **Recommendation:** retain proposed decisions D-04 and D-05 for this SSR use case. The official Nitro Bun preset worked on the first implementation approach; the custom Bun server fallback was not needed. Keep Nitro as a spike-only direct dependency until the owner records its production dependency decision.
 
@@ -84,13 +84,22 @@ rm -rf node_modules backend/node_modules frontend/node_modules spikes/m0/tanstac
 
 `bun install --frozen-lockfile` installed 138 packages. The subsequent `bun run verify` exited `0`.
 
-The requested spike push was attempted:
+The initial spike push was attempted before repository setup:
 
 ```bash
 git push -u origin spike/m0-tanstack-ssr
 ```
 
-It exited `128` because `origin` is not configured.
+It exited `128` because `origin` was not configured. After creating the repository, the following commands completed successfully:
+
+```bash
+git remote add origin https://github.com/Kelp0tr0nic/kelpo-site.git
+git push -u origin main
+git push -u origin spike/m0-tanstack-ssr
+git push -u origin docs/m0-tanstack-ssr
+```
+
+The initial `main` push was explicitly approved by the owner to bootstrap the empty repository. No later changes were pushed to `main`.
 
 ## 6. Evidence
 
@@ -147,7 +156,7 @@ M0 item 1 provides positive evidence for TanStack Start `1.169.4` with Bun `1.4.
 
 ## 10. Leftover risks and unverified items
 
-- **Hosted delivery and CI:** unverified because there is no configured Git remote. The spike branch and findings branch are local; no PR URL or CI status exists.
+- **CI:** no CI configuration exists in this checkout, so hosted PR checks are not available. Remote repository and branch delivery were verified separately.
 - **Nitro release risk:** the tested direct pin is an RC build dependency. It worked here, but this does not make it an accepted production dependency.
 - **Platform coverage:** execution was on Windows with Chromium only. The verifier includes POSIX process-group cleanup, but that path was not exercised.
 - **Deployment behavior:** local production output was tested, not a deployed VPS, Caddy, HTTPS, environment validation, or container packaging.
