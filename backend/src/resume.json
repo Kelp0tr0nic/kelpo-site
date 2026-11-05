@@ -1,0 +1,50 @@
+{
+  "name": "Your Name",
+  "title": "Fullstack Developer",
+  "location": "Remote",
+  "email": "you@example.com",
+  "links": [
+    { "label": "GitHub", "url": "https://github.com/your-handle" },
+    { "label": "LinkedIn", "url": "https://linkedin.com/in/your-handle" }
+  ],
+  "summary": "Junior developer who likes understanding how the pieces fit together. I build small fullstack apps in several frameworks to compare the tradeoffs, and I care about clean, self-contained setups.",
+  "experience": [
+    {
+      "role": "Developer",
+      "company": "Side Projects",
+      "period": "2024 — now",
+      "highlights": [
+        "Built the same concept-graph app in FastAPI + vanilla JS and Next.js to compare server vs client data fetching.",
+        "Wrote a pytest suite covering calculator and wiki API endpoints."
+      ]
+    },
+    {
+      "role": "Student",
+      "company": "Self-taught",
+      "period": "2023 — 2024",
+      "highlights": [
+        "Worked through REST APIs, SQL, and React fundamentals."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Concept Graph Explorer",
+      "description": "A fullstack app for browsing linked concepts with an interactive graph view.",
+      "tags": ["FastAPI", "Next.js", "Tailwind"]
+    },
+    {
+      "name": "Financial Dashboard",
+      "description": "Wiki articles plus live calculator endpoints served by a Python backend.",
+      "tags": ["Vite", "React", "FastAPI"]
+    }
+  ],
+  "skills": [
+    { "group": "Frontend", "items": ["React", "TypeScript", "Tailwind", "Vite"] },
+    { "group": "Backend", "items": ["Bun", "Elysia", "FastAPI", "Spring Boot"] },
+    { "group": "Tools", "items": ["Git", "Docker", "VS Code"] }
+  ],
+  "education": [
+    { "degree": "Self-directed study, Web Development", "school": "Online", "period": "2023 — now" }
+  ]
+}
