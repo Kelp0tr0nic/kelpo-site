@@ -1,0 +1,24 @@
+{
+  "name": "@m0-eden/web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "start": "bun .output/server/index.mjs"
+  },
+  "dependencies": {
+    "@elysiajs/eden": "1.4.9",
+    "@m0-eden/api": "workspace:*",
+    "@tanstack/react-router": "1.170.46",
+    "@tanstack/react-start": "1.169.4",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.2.1",
+    "nitro": "3.0.261103-rc",
+    "vite": "8.3.5"
+  }
+}

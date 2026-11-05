@@ -1,0 +1,15 @@
+{
+  "name": "@m0-eden/harness",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "bun scripts/verify.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "bun run --cwd apps/web build"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/bun": "1.4.4",
+    "typescript": "7.0.2"
+  }
+}
