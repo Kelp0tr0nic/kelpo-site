@@ -2,8 +2,9 @@
   "name": "kelpo-site",
   "version": "0.1.0",
   "private": true,
-  "workspaces": ["backend", "frontend"],
+  "workspaces": ["backend", "frontend", "spikes/m0/tiptap-lazy-node"],
   "scripts": {
+    "verify": "bun run --cwd spikes/m0/tiptap-lazy-node verify",
     "dev": "bun run --filter '*' dev",
     "dev:backend": "bun run --filter backend dev",
     "dev:frontend": "bun run --filter frontend dev",
