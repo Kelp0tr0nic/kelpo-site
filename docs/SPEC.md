@@ -5,7 +5,7 @@
 | **Owner** | Kelp |
 | **Spec status** | Draft: decisions marked *Proposed* await owner review |
 | **Current milestone** | M0 |
-| **Last updated** | 2026-11-04 |
+| **Last updated** | 2026-11-16 |
 
 ## 1. Purpose
 
@@ -171,6 +171,7 @@ Change a decision by adding a row that supersedes it. Do not rewrite history.
 | D-14 | S3-compatible object storage for images | Proposed | Keeps binaries out of the database and off the VPS disk | None planned |
 | D-15 | Three.js for the first 3D work | Proposed | Mature ecosystem; owner interest | Choose per experiment; the lab contract is library-agnostic |
 | D-16 | Elysia owns data access and business logic; the web app calls it through Eden, not TanStack server functions | Proposed | Avoids two competing backend layers and keeps the framework replaceable | Revisit only if M0 finds SSR data loading unworkable |
+| D-17 | M0 exit package. Supersedes D-04, D-05, D-08, D-09 and D-16, moving them from *Proposed* to *Accepted*, and ratifies the versions M0 executed against: Bun `1.4.4`, TypeScript `7.0.2`, React `19.3.1`, Vite `8.3.5`, Elysia `1.4.31`, `@elysiajs/eden` `1.4.9`, better-auth `1.7.18`, `@better-auth/passkey` `1.7.18`, `pg` `8.23.1`, PostgreSQL `16.15` (`postgres:16-alpine`), TanStack Start `1.169.4`, TanStack Router `1.170.46`, Nitro `3.0.261103-rc`, Tiptap `3.30.3`, Playwright `1.64.1` | Accepted | All five M0 spikes passed their predeclared acceptance criteria with negative controls, on exact pins. Pins record what was executed, not what was planned: three planned pins drifted (better-auth and @better-auth/passkey `1.7.17` to `1.7.18`, @elysiajs/eden `1.4.10` to `1.4.9`) and the database image ran two majors below plan (`postgres:18.1-alpine` planned, `postgres:16-alpine` executed). Spike dependencies stay spike-only; adopting any of them in production is a separate decision. | D-07 stays Proposed. M1 must prove Drizzle under FND-08, exercise the checked-in-migration practice that this spike bypassed, and confirm PostgreSQL `18.1` before production. Re-check Tiptap peer alignment before M4 adopts the full editor package set. |
 
 ### Dependency policy for newer tools
 
@@ -455,3 +456,9 @@ Record completed requirements, how they were verified, and changes to scope.
 |---|---|---|
 | 2026-11-04 | Initial spec drafted | Owner review pending |
 | 2026-11-04 | Pre-handoff review: added D-16, FND-10, FND-11, RES-05, M0 process, M1 batches and owner inputs; made EDT-07, EDT-10, MED-01, and BLOG-05 measurable | Owner review pending |
+| 2026-11-16 | M0 item 1, TanStack Start SSR on Bun: PASS on approach 1. Raw `GET /server` returned the exact SSR element, raw `/client-only` excluded its marker, and Chromium then observed it. D-04 and D-05 accepted by D-17 | `bun run verify` on `spike/m0-tanstack-ssr` @ `cc4f9f7`: 5 pass, 0 fail, 6 assertions. Production Bun output, raw HTTP plus Playwright. See `docs/spikes/m0-tanstack-ssr.md` (PR #1) |
+| 2026-11-16 | M0 item 2, Eden Treaty types across workspaces: PASS on approach 1. The exported `App` type produced exact inferred literals in both SSR and browser code, with `@ts-expect-error` controls rejecting unknown routes and wrong types. D-16 accepted by D-17 | `bun run verify` on `spike/m0-eden-treaty` @ `39047f2`: 6 pass, 0 fail, 10 assertions. Real HTTP from production SSR and Chromium. See `docs/spikes/m0-eden-treaty.md` (PR #5) |
+| 2026-11-16 | M0 item 3, Better Auth handler, sessions and passkeys in Elysia: PASS on approach 1. A virtual authenticator registered a passkey, signed out, and re-authenticated from a fresh context; the session cookie was `HttpOnly`. D-08 accepted by D-17 | `bun run verify` on `spike/m0-better-auth` @ `76eb20d`: 5 pass, 0 fail, 21 assertions. Ephemeral PostgreSQL `16.15` plus Playwright Credentials API. See `docs/spikes/m0-better-auth.md` (PR #2) |
+| 2026-11-16 | M0 item 4, Tiptap JSON to server HTML without shipping the editor in public chunks: PASS on approach 1. Browser-loaded production chunks and their source maps contained no Tiptap or ProseMirror code; Tiptap appeared only in the server output. D-09 accepted by D-17 | `bun run verify` on `spike/m0-tiptap-rendering` @ `0e1335d`: 14 pass, 0 fail, 18 assertions. Scanner verified against leaky synthetic fixtures. See `docs/spikes/m0-tiptap-rendering.md` (PR #3) |
+| 2026-11-16 | M0 item 5, custom Tiptap node with a lazy client island: PASS on approach 2, after approach 1 failed with React hydration error 418. The node rendered semantic HTML on the server and its interactive component arrived in a separate chunk after hydration. D-09 supported by this result | `bun run verify` on `spike/m0-tiptap-lazy-node` @ `ab093cd`: 4 pass, 0 fail, 22 assertions. Deliberate hydration mismatch route used as negative control. See `docs/spikes/m0-tiptap-lazy-node.md` (PR #4) |
+| 2026-11-16 | M0 pin rectification: ratified the versions the spikes executed rather than the planned ones, superseding three npm pins and recording the two-major PostgreSQL gap. Added D-17 and recorded that the checked-in-migration practice was never exercised | Verified against committed spike manifests, `bun.lock`, and `spikes/m0/*/scripts/verify.ts` |
